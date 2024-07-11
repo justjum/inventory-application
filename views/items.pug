@@ -1,0 +1,21 @@
+extends layout 
+
+block content 
+
+  h1(style="text-align:center") #{title} 
+  
+  if items.length
+    div.container(style="max-width: 500px")
+        table.table 
+            tr(style="text-align:center") 
+                th #[strong Item] 
+                th #[strong Quantity]
+            for item in items 
+                tr
+                td
+                    a(href=item.url) #{item.brand.name} #{item.model}
+                td(style="text-align:center") 
+                    p= item.quantity
+    
+  else 
+    p No items in inventory.
