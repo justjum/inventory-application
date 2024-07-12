@@ -5,13 +5,17 @@ block content
   h1= title
   h3 #{item.brand.name} #{item.model}
   
-  div.col-sm-4
-    table.table.sm
-      tr 
-        td #[strong Category]
-        td 
-          a(href=item.category.url) #{item.category.name}
-      tr 
-        td #[strong Price] 
-        td #{item.price_formatted}
-      
+  div.container
+    ul
+      li #[strong Category:]
+        a(href=item.category.url) #{item.category.name}
+      li #[strong Price:] #{item.price_formatted}     
+      li #[strong Description:] #{item.description}
+      li #[strong Quantity:] #{item.quantity}
+
+    hr
+    button.btn.btn-primary Update Brand 
+    br
+    button.btn.btn-primary Delete Brand
+
+

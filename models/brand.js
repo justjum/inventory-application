@@ -7,8 +7,8 @@ const BrandSchema = new Schema({
     website: { type: String, maxLength: 100 }
 })
 
-BrandSchema.virtual('url', function() {
-    return `/inventory/brands/${this.name}`
+BrandSchema.virtual('url').get(function() {
+    return `/inventory/brand/${this._id}`
 })
 
 module.exports = mongoose.model("Brand", BrandSchema)

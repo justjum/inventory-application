@@ -1,0 +1,24 @@
+extends layout 
+
+block content 
+
+  h1= Title 
+
+  if brands.length 
+    table.table 
+      tr 
+        th #[strong Brand]
+        th #[strong Website]
+      for brand in brands 
+        tr 
+          td 
+            a(href=brand.url) #{brand.name} 
+          td
+            a(href=brand.website) #{brand.website}
+
+  else 
+    p There are no brands.
+    
+
+
+    

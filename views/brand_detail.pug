@@ -1,0 +1,17 @@
+extends layout 
+
+block content 
+
+  h1 #{title} #{brand.name}
+
+  div.container.d-flex.flex-column(style="padding-left:20px;padding-top:20px;width:fit-content")
+    table 
+          li #[strong Brand:] #{brand.name}
+          li #[strong Website:] #{brand.website}
+
+    hr
+
+    button.btn.btn-primary Update Brand 
+    br
+    button.btn.btn-primary Delete Brand
+    

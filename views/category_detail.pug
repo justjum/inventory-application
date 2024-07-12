@@ -1,0 +1,11 @@
+extends layout 
+
+block content 
+
+  h1 #{title} #{category.name}
+
+  div.container.d-flex.flex-column(style="padding-left:20px;padding-top:20px;width:fit-content")
+    hr
+    button.btn.btn-primary Update Category
+    br
+    button.btn.btn-primary Delete Category

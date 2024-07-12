@@ -6,3 +6,14 @@ body {
 a {
   color: #00B7FF;
 }
+
+ul {
+  text-decoration: none;
+  list-style: none;
+}
+
+li {
+  list-style: none;
+  font-size: large;
+  padding: 3px;
+}

@@ -30,19 +30,22 @@ exports.allItems = asyncHandler(async (req, res, next) => {
         .populate('category')
         .populate('brand')
         .exec();
-        
+    console.log('Got list')
+ 
+// Sort algorithm too slow 
     allItems.sort((a, b) => {
         const brandA = a.brand.name;
         const brandB = b.brand.name;
         if (brandA < brandB) {
             return -1;
         }
-        if (brandB < brandA) {
+        if (brandB > brandA) {
             return 1;
         }
 
         return 0;
     });
+    console.log('Sorted')
 
     res.render("items", {
         title: "All Items",
@@ -55,7 +58,12 @@ exports.item_detail = asyncHandler(async (req, res, next) => {
         .populate('brand')
         .populate('category')
         .exec()
-        
+    
+    if (item_current === null) {
+        const err = new Error('Item does not exist');
+        err.status = 404;
+        return next(err)
+    }    
 
     res.render('item_detail', {
         title: 'Item Details',

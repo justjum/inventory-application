@@ -1,0 +1,17 @@
+extends layout 
+
+block content 
+
+  h1= title 
+
+  if categories.length 
+    table.table 
+      for category in categories
+        tr
+          td 
+            a(href=category.url) #{category.name}
+
+
+
+  else 
+    p There are no categories.
