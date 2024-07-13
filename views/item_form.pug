@@ -1,0 +1,54 @@
+extends layout 
+
+block content 
+
+  h1= title 
+
+  div.container(style="width:fit-content")
+    form(action="", method="POST")
+      div.form-group
+        label(for='category') Category:
+        select#category.form-control(name='category' required)
+          option(value='') --Please select a Category-- 
+          for category in categories
+            if selected_category==category._id.toString()
+              option(value=category._id, selected) #{category.name}
+            else 
+              option(value=category._id) #{category.name}
+
+      div.form-group
+        label(for='brand') Brand:   
+        select#brand.form-control(name='brand' required)
+          option(value='') --Please select a Brand--  
+          for brand in brands
+            option(value=brand._id) #{brand.name}
+      
+      div.form-group
+        label(for='model') Model:
+        input#model.form-control(type="text" name='model')
+
+      div.form-group
+        label(for="description") Description:
+        textarea#description.form-control(name="description") 
+      
+      div.form-group
+        label(for="price") Price:
+        if undefined === item
+          input#price.form-control(type="number" name='price')
+        else 
+          input#price.form-control(type="number" value=item.price name='price')
+
+      div.form-group
+        label(for="quantity") Quantity:
+        if undefined === item
+          input#quantity.form-control(type="number" name='quantity')
+        else 
+          input#quantity.form-control(type="number" value=item.quantity name='quantity')
+      
+      div.form-group
+        button.btn.btn-primary(type='submit') Submit  
+  
+  if undefined != errors 
+    ul
+      for error in errors 
+        li= error.msg 

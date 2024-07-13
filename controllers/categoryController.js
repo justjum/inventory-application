@@ -26,3 +26,41 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
         category: category,
     });
 });
+
+exports.category_create_get = asyncHandler(async (req, res, next) => {
+    res.render('category_form', {
+        title: 'Create Category',
+    });
+});
+
+exports.category_create_post = [
+    body("name", "Category must have a name")
+        .isLength({min:1})
+        .escape(),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        const category = await Category.findOne({name: req.body.name}).exec();
+
+        if (category !== null) {
+            res.redirect(category.url)
+            return;
+        }
+
+        const newCategory = new Category({name:req.body.name});
+
+        if (!errors.isEmpty()) {
+            res.render('category_form', {
+                title: 'Create Category',
+                errors: errors.array(),
+                newCategory: newCategory
+            });
+        }
+
+        else {
+            await newCategory.save();
+            res.redirect(newCategory.url)
+        }
+    })
+]

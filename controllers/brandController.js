@@ -28,3 +28,44 @@ exports.brand_detail = asyncHandler(async (req, res, next) => {
         brand: brand
     });
 });
+
+exports.brand_create_get = asyncHandler(async (req, res, next) => {
+    res.render('brand_form', {
+        title: "Create Brand"
+    })
+});
+
+exports.brand_create_post = [
+    body("name", "Must have brand name.").isLength(min=1).escape(),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        const brand = await Brand.findOne({name:req.body.name}).exec();
+        
+        if (brand !== null) {
+            console.log('redirect')
+            res.redirect(brand.url)
+            return;
+        }
+
+        const newBrand = new Brand({
+            name: req.body.name,
+            website: req.body.website
+        })
+
+        if (!errors.isEmpty()) {
+            res.render('brand_form', {
+                title: 'Create Brand',
+                newBrand: newBrand,
+                errors: errors.array()
+            })
+
+        }
+
+        else {
+            await newBrand.save();
+            res.redirect(newBrand.url)
+        }
+    })
+]

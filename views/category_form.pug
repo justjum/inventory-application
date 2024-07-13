@@ -1,0 +1,25 @@
+extends layout 
+
+block content 
+
+  h1= title
+
+  div.container(style="width:fit-content")
+    form(action="" method="POST")
+      div.form-group
+        label(for="name") Category:
+        if undefined === newCategory 
+          input.form-control(type="text" name="name")
+        else 
+          input.form-control(type="text" name="name" value=newCategory.name)
+      
+      div.form-group
+        button.btn.btn-primary.form-control(type="submit")  Submit
+
+  if errors
+    p=error
+    ul 
+      for error in errors 
+        li=error.msg 
+            
+      

@@ -7,7 +7,8 @@ block content
   div.container.d-flex.flex-column(style="padding-left:20px;padding-top:20px;width:fit-content")
     table 
           li #[strong Brand:] #{brand.name}
-          li #[strong Website:] #{brand.website}
+          li #[strong Website:] 
+            a(href=brand.website) #{brand.website}
 
     hr
 
