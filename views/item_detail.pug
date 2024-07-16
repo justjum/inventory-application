@@ -14,8 +14,9 @@ block content
       li #[strong Quantity:] #{item.quantity}
 
     hr
-    button.btn.btn-primary Update Brand 
-    p
-    button.btn.btn-primary Delete Brand
+    a(href=item.url+'update') 
+      button.btn.btn-primary Update Item
+    a(href=item.url+"/delete") 
+      button.btn.btn-primary Delete Item
 
 

@@ -6,6 +6,8 @@ block content
 
   div.container.d-flex.flex-column(style="padding-left:20px;padding-top:20px;width:fit-content")
     hr
-    button.btn.btn-primary Update Category
+    a(href=category.url+'/update') 
+      button.btn.btn-primary Update Category
     br
-    button.btn.btn-primary Delete Category
+    a(href=category.url+"/delete") 
+      button.btn.btn-primary Delete Category

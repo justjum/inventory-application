@@ -136,9 +136,19 @@ exports.item_create_post = [
             // Place holders for image functions
             await item.save();
             res.redirect(item.url);
-
-        }
-            
+        }  
     })    
-
 ]
+
+exports.item_delete_get = asyncHandler(async(req, res, next) => {
+    current_item = await Item.findById(req.params.id);
+    res.render('item_delete', {
+        title: 'Delete Item:',
+        item: current_item
+    });
+}) 
+
+exports.item_delete_post = asyncHandler(async( req, res, next) => {
+    await Item.findByIdAndDelete(req.body.itemid);
+    res.redirect('/inventory/items')
+})

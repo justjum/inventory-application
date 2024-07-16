@@ -1,0 +1,21 @@
+extends layout 
+
+block content 
+
+  h1= title 
+
+  h3= category.name 
+
+  if items.length 
+    p #[strong Delete the following items prior to removing category:]
+
+    for item in items 
+      a(href=item.url) 
+        p #{item.brand.name} #{item.model}
+
+  else 
+    p #[strong Are you sure you want to delete this category?]
+    form(method="POST") 
+      div.form-group
+        input#category-id.form-control(type="hidden" name='categoryid' value=category.id)
+      button.btn.btn-primary(type='submit') Confirm
