@@ -140,6 +140,84 @@ exports.item_create_post = [
     })    
 ]
 
+
+exports.item_update_get = asyncHandler(async (req, res, next) => {
+    const [ allBrands, allCategories, item ] = await Promise.all([
+        Brand.find({}).sort({name:1}).exec(),
+        Category.find({}).sort({name:1}).exec(),
+        Item.findById(req.params.id).exec()
+    ])
+
+    res.render('item_form', {
+        title: "Update Item",
+        categories: allCategories,
+        brands: allBrands,
+        item: item,
+        selected_category: item.category,
+        selected_brand: item.brand
+    });
+})
+
+exports.item_update_post = [
+    // Validate and sanitize forms
+    body("category", "Category must be specified").trim().escape(),
+    body("brand", "Brand must be satisfied").trim().escape(),
+    body("model", "Model must be specified")
+        .trim()
+        .isLength({ min: 1})
+        .escape(),
+    body("description", "Description must be specified")
+        .trim()
+        .isLength( {min: 1, max:100})
+        .escape(),
+    body("price", "Price must be between $1 and $20000")
+        .trim()
+        .isNumeric({min: 1, max: 20000})
+        .escape(),
+    body("quantity", "Quantity must be between 1 and 100")
+        .trim()
+        .isNumeric({min: 1, max: 100}),
+    
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        const item = new Item({
+            _id: req.params.id,
+            category: req.body.category,
+            brand: req.body.brand,
+            model: req.body.model,
+            description: req.body.description,
+            price: req.body.price,
+            quantity: req.body.quantity,
+        });
+
+        if(!errors.isEmpty()) {
+            // There are errors, render form with sanitized values and messages.
+            const [ allBrands, allCategories ] = await Promise.all([
+                Brand.find({}).exec(),
+                Category.find({}).exec()
+            ])
+
+            res.render("item_form", {
+                title: "Update Item",
+                brands: allBrands,
+                categories: allCategories,
+                errors: errors.array(),
+                item: item,
+                selected_brand: item.brand,
+                selected_category: item.category
+            })
+        }
+
+        else {
+            // Place holders for image functions
+            await Item.findByIdAndUpdate(req.params.id, item)
+            res.redirect(item.url);
+        }  
+    })    
+]
+
+
 exports.item_delete_get = asyncHandler(async(req, res, next) => {
     current_item = await Item.findById(req.params.id);
     res.render('item_delete', {

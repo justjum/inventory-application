@@ -11,8 +11,9 @@ block content
             a(href=brand.website) #{brand.website}
 
     hr
-
-    button.btn.btn-primary Update Brand 
+    a(href=brand.url+"/update") 
+      button.btn.btn-primary Update Brand 
     br
-    button.btn.btn-primary Delete Brand
+    a(href=brand.url+"/delete") 
+      button.btn.btn-primary Delete Brand
     

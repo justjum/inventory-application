@@ -1,0 +1,21 @@
+extends layout 
+
+block content 
+
+  h1= title
+  h3= brand.name 
+
+  if items.length 
+    p #[strong Please delete the following items connected with this brand:]
+
+    for item in items 
+        a(href=item.url)
+          p #{item.brand.name} #{item.model}
+
+  else 
+    p #[strong Are you sure that you want to delete #{brand.name}?]
+
+    form(action="" method="POST")
+        div.form-group
+        input#brandid(type="hidden" name="brandid" value=brand.id)
+        button.btn.btn-primary(type="submit") Confirm  

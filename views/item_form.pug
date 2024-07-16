@@ -21,15 +21,18 @@ block content
         select#brand.form-control(name='brand' required)
           option(value='') --Please select a Brand--  
           for brand in brands
-            option(value=brand._id) #{brand.name}
+            if selected_brand==brand._id.toString()
+              option(value=brand._id, selected) #{brand.name}
+            else  
+              option(value=brand._id) #{brand.name}
       
       div.form-group
         label(for='model') Model:
-        input#model.form-control(type="text" name='model')
+        input#model.form-control(type="text" name='model' value=item.model)
 
       div.form-group
         label(for="description") Description:
-        textarea#description.form-control(name="description") 
+        textarea#description.form-control(name="description" ) #{item.description}
       
       div.form-group
         label(for="price") Price:
