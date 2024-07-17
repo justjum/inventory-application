@@ -31,17 +31,22 @@ exports.brand_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.brand_create_get = asyncHandler(async (req, res, next) => {
+    console.log('create get')
     res.render('brand_form', {
-        title: "Create Brand"
+        title: "Create Brand",
     })
 });
 
 exports.brand_create_post = [
+    
     body("name", "Must have brand name.").isLength(min=1).escape(),
+    body("password", "Incorrect password")
+        .trim()
+        .isIn('!iAnV42ds54'),
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
-
+        console.log('create post');
         const brand = await Brand.findOne({name:req.body.name}).exec();
         
         if (brand !== null) {
@@ -86,12 +91,33 @@ exports.brand_delete_get = asyncHandler(async (req, res, next) => {
     })
 })
 
-exports.brand_delete_post = asyncHandler(async (req, res, next) => {
-    await Brand.findByIdAndDelete(req.body.brandid);
-    res.redirect('/inventory/brands');
-})
+exports.brand_delete_post = [
+    body("password", "Incorrect password")
+        .trim()
+        .isIn('!iAnV42ds54'),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            const currentBrand = await Brand.findById(req.params.id).exec();
+
+            res.render('brand_delete', {
+                title: 'Update Brand',
+                brand: currentBrand,
+                items: [],
+                errors: errors.array()
+            })
+            return
+        }
+
+        await Brand.findByIdAndDelete(req.body.brandid);
+        res.redirect('/inventory/brands');
+    })
+]
+
 
 exports.brand_update_get = asyncHandler(async (req, res, next) => {
+    console.log('update get')
     const brand = await Brand.findById(req.params.id)
     res.render('brand_form', {
         title: "Update Brand",
@@ -101,8 +127,12 @@ exports.brand_update_get = asyncHandler(async (req, res, next) => {
 
 exports.brand_update_post = [
     body("name", "Must have brand name.").isLength(min=1).escape(),
+    body("password", "Incorrect password")
+        .trim()
+        .isIn('!iAnV42ds54'),
 
     asyncHandler(async (req, res, next) => {
+        console.log('update post')
         const errors = validationResult(req);
 
         const brand = new Brand({

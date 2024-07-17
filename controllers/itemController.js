@@ -5,6 +5,7 @@ const Category = require("../models/category");
 const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const category = require("../models/category");
+const cloudinary = require('cloudinary').v2;
 
 exports.index = asyncHandler(async (req, res, next) => {
     // get details of all items, categories, and brands
@@ -103,10 +104,14 @@ exports.item_create_post = [
     body("quantity", "Quantity must be between 1 and 100")
         .trim()
         .isNumeric({min: 1, max: 100}),
+    body("password", "Incorrect password")
+        .trim()
+        .isIn('!iAnV42ds54'),
     
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
 
+        
         const item = new Item({
             category: req.body.category,
             brand: req.body.brand,
@@ -128,7 +133,9 @@ exports.item_create_post = [
                 brands: allBrands,
                 categories: allCategories,
                 errors: errors.array(),
-                item: item
+                item: item,
+                selected_category: item.category,
+                selected_brand: item.brand
             })
         }
 
@@ -177,6 +184,9 @@ exports.item_update_post = [
     body("quantity", "Quantity must be between 1 and 100")
         .trim()
         .isNumeric({min: 1, max: 100}),
+    body("password", "Incorrect password")
+        .trim()
+        .isIn('!iAnV42ds54'),
     
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
@@ -226,7 +236,30 @@ exports.item_delete_get = asyncHandler(async(req, res, next) => {
     });
 }) 
 
-exports.item_delete_post = asyncHandler(async( req, res, next) => {
-    await Item.findByIdAndDelete(req.body.itemid);
-    res.redirect('/inventory/items')
-})
+exports.item_delete_post = [
+    // Validate password
+    body("password", "Incorrect password")
+        .trim()
+        .isIn('!iAnV42ds54'),
+
+
+    asyncHandler(async( req, res, next) => {
+        const errors = validationResult(req)
+
+        if (!errors.isEmpty()) {
+            current_item = await Item.findById(req.params.id);
+            res.render('item_delete', {
+                title: 'Delete Item:',
+                item: current_item,
+                errors: errors.array()
+            });
+        } else {
+            await Item.findByIdAndDelete(req.body.itemid);
+            res.redirect('/inventory/items')
+        }
+
+    })     
+    
+]
+
+

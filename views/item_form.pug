@@ -28,11 +28,18 @@ block content
       
       div.form-group
         label(for='model') Model:
-        input#model.form-control(type="text" name='model' value=item.model)
+          if item != null
+            input#model.form-control(type="text" name='model' value=item.model)
+          else 
+            input#model.form-control(type="text" name='model')
+        
 
       div.form-group
         label(for="description") Description:
-        textarea#description.form-control(name="description" ) #{item.description}
+          if item != null
+            textarea#description.form-control(name="description" ) #{item.description}
+          else 
+            textarea#description.form-control(name="description" ) 
       
       div.form-group
         label(for="price") Price:
@@ -47,6 +54,10 @@ block content
           input#quantity.form-control(type="number" name='quantity')
         else 
           input#quantity.form-control(type="number" value=item.quantity name='quantity')
+
+      div.form-group
+        label(for="password") Password: 
+          input#password.form-control(type="password" name="password")
       
       div.form-group
         button.btn.btn-primary(type='submit') Submit  

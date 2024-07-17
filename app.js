@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const dotenv = require('dotenv');
+const cloudinary = require('cloudinary').v2;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,9 +25,21 @@ main().catch((err) => console.log(err));
 
 async function main() {
   await mongoose.connect(mongoDB);
-  console.log("Connected");
+  console.log("Mongoose Connected");
 }
 
+// Cloudinary Connections
+async function cloud() {
+      // Configuration
+    await cloudinary.config({ 
+        cloud_name: 'dhz7ys7e1', 
+        api_key: '484261191225961', 
+        api_secret: process.env.CLOUD_URI
+    });
+    console.log("Cloudinary Connected")
+}
+
+cloud();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

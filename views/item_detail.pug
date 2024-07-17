@@ -12,6 +12,9 @@ block content
       li #[strong Price:] #{item.price_formatted}     
       li #[strong Description:] #{item.description}
       li #[strong Quantity:] #{item.quantity}
+      li #[strong Image:]
+      img(src=item.image, alt=item.image_alt)
+      li #[strong Image Alt Text:] #{item.image_alt}
 
     hr
     a(href=item.url+'/update') 

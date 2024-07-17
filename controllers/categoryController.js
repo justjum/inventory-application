@@ -39,6 +39,9 @@ exports.category_create_post = [
     body("name", "Category must have a name")
         .isLength({min:1})
         .escape(),
+    body("password", "Incorrect password")
+        .trim()
+        .isIn('!iAnV42ds54'),
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
@@ -82,10 +85,30 @@ exports.category_delete_get = asyncHandler(async (req, res, next) => {
     })
 })
 
-exports.category_delete_post = asyncHandler(async (req, res, next)=> {
-    await Category.findByIdAndDelete(req.body.categoryid);
-    res.redirect('/inventory/categories')
-})
+exports.category_delete_post = [
+    body("password", "Incorrect password")
+        .trim()
+        .isIn('!iAnV42ds54'),
+
+    asyncHandler(async (req, res, next)=> {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            const currentCategory = await Category.findById(req.params.id).exec();
+
+            res.render('category_delete', {
+                title: 'Delete Category',
+                category: currentCategory,
+                items: [],
+                errors: errors.array()
+            })
+            return
+        }
+
+        await Category.findByIdAndDelete(req.body.categoryid);
+        res.redirect('/inventory/categories')
+    })
+]
+
 
 exports.category_update_get = asyncHandler(async (req, res, next) => {
     const category = await Category.findById(req.params.id)
@@ -97,6 +120,9 @@ exports.category_update_get = asyncHandler(async (req, res, next) => {
 
 exports.category_update_post = [
     body("name", "Must have category name.").isLength(min=1).escape(),
+    body("password", "Incorrect password")
+        .trim()
+        .isIn('!iAnV42ds54'),
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
