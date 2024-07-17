@@ -5,6 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const dotenv = require('dotenv');
 const cloudinary = require('cloudinary').v2;
+const compression = require('compression');
+
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -41,6 +44,15 @@ async function cloud() {
 
 cloud();
 
+// Set up rate limitier
+const RateLimit = require('express-rate-limit');
+const limiter = RateLimit({
+  windowMs: 1 * 60 *1000, // 1 minute
+  max: 20,
+})
+app.use(limiter)
+
+app.use(compression());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
